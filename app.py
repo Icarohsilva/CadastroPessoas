@@ -1,3 +1,10 @@
+# Sistema de Cadastro e Gerenciamento de Usuários 
+import base64
+import matplotlib.pyplot as plt
+import webbrowser 
+import random
+import string
+import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -5,19 +12,11 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Integ
 from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError,DataRequired
 from werkzeug.security import generate_password_hash
 from flask_mail import Message, Mail
-import random
-import string
-import os
-import webbrowser   
+from forms import CadastroForm, EnderecoForm, SenhaForm  # Importe os formulários corretamente
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from sqlalchemy import func
 from io import BytesIO
-import base64
-import matplotlib.pyplot as plt
-from forms import CadastroForm, EnderecoForm, SenhaForm  # Importe os formulários corretamente
-
-
 
 # Configurar o Flask
 app = Flask(__name__)
