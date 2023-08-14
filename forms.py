@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError, DataRequired
+
 
 class CadastroForm(FlaskForm):
     nome_completo = StringField('Nome Completo', validators=[DataRequired()])
@@ -22,7 +23,6 @@ class SenhaForm(FlaskForm):
     senha = PasswordField('Nova Senha', validators=[DataRequired(), EqualTo('confirma_senha', message='Senhas devem coincidir')])
     confirma_senha = PasswordField('Confirmar Senha', validators=[DataRequired()])
     submit = SubmitField('Cadastrar')
-
 
 
 class RecuperarSenhaForm(FlaskForm):
