@@ -14,6 +14,7 @@ from werkzeug.security import generate_password_hash
 from flask_mail import Message, Mail
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+from sqlalchemy import func  # Import the 'func' function from SQLAlchemy
 from models import db, User, Endereco  # Import models from models.py
 from forms import CadastroForm, EnderecoForm, SenhaForm, RecuperarSenhaForm, NovaSenhaForm
 
@@ -26,8 +27,6 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'seu_email@gmail.com'
 app.config['MAIL_PASSWORD'] = 'sua_senha'
 
-
-# Criar instância do Flask-Mail
 mail = Mail(app)
 db.init_app(app)
 
