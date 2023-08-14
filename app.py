@@ -63,43 +63,9 @@ class LoginForm(FlaskForm):
     lembrar = BooleanField('Lembrar-me')
     enviar = SubmitField('Entrar')
 
-class CadastroForm(FlaskForm):
-    nome_completo = StringField('Nome Completo', validators=[InputRequired(), Length(min=3)])
-    cpf = StringField('CPF', validators=[DataRequired()])
-    idade = IntegerField('Idade')
-    genero = StringField('Gênero')
-    email = StringField('Email', validators=[Email()])
-    data_nascimento = DateField('Data de Nascimento', validators=[DataRequired()])
-    telefone = StringField('Telefone')
-
-    submit = SubmitField('Avançar')
-
-class EnderecoForm(FlaskForm):
-    rua = StringField('Rua', validators=[InputRequired()])
-    numero = StringField('Número', validators=[InputRequired()])
-    cidade = StringField('Cidade', validators=[InputRequired()])
-    estado = StringField('Estado/UF', validators=[InputRequired()])
-    submit = SubmitField('Avançar')
-
-class SenhaForm(FlaskForm):
-    senha = PasswordField('Nova Senha', validators=[InputRequired(), EqualTo('confirma_senha', message='Senhas devem coincidir')])
-    confirma_senha = PasswordField('Confirmar Senha', validators=[InputRequired()])
-    submit = SubmitField('Cadastrar')
-
-    def validate_cpf(self, field):
-        if self.estrangeiro.data:
-            return
-        # Realizar validação de CPF aqui, por exemplo, usando biblioteca específica
-
-    def validate_documento(self, field):
-        if not self.estrangeiro.data:
-            return
-        # Realizar validação de documento aqui
-
 class RecuperarSenhaForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email()])
     enviar = SubmitField('Enviar')
-
 
 class NovaSenhaForm(FlaskForm):
     senha = PasswordField('Nova Senha', validators=[InputRequired(), EqualTo('confirma_senha', message='Senhas devem coincidir')])
@@ -193,7 +159,7 @@ def lista_cadastros():
 
     user_id = session['user_id']
     user = User.query.get_or_404(user_id)
-    if user.email != 'admin@example.com':
+    if user.email != 'admin@admin.com':
         return redirect(url_for('pagina_apos_login'))
 
     cadastros = User.query.all()
@@ -205,7 +171,7 @@ def lista_cadastros():
     if request.method == 'POST':
         filtro_estado = request.form.get('filtro_estado')
         if filtro_estado:
-            cadastros = User.query.filter_by(endereco__estado=filtro_estado).all()
+            cadastros = User.query.join(User.endereco).filter(Endereco.estado == filtro_estado).all()  # Correção aqui
 
     return render_template('lista_cadastros.html', cadastros=cadastros, estados=estados)
 
@@ -216,10 +182,10 @@ def grafico():
 
     user_id = session['user_id']
     user = User.query.get_or_404(user_id)
-    if user.email != 'admin@example.com':
+    if user.email != 'admin@admin.com':
         return redirect(url_for('pagina_apos_login'))
 
-    estados = db.session.query(User.endereco.estado, func.count(User.id)).group_by(User.endereco.estado).all()
+    estados = db.session.query(Endereco.estado, func.count(User.id)).join(User).group_by(Endereco.estado).all()  # Correção aqui
     estados = dict(estados)
     estados = {estado: estados.get(estado, 0) for estado in ['SP', 'RJ', 'MG', 'RS', 'PR']}  # Substitua pela lista completa de UF
 
@@ -227,7 +193,7 @@ def grafico():
     plt.xlabel('Estado')
     plt.ylabel('Quantidade')
     plt.title('Quantidade de Cadastros por Estado')
-    
+
     img_stream = BytesIO()
     plt.savefig(img_stream, format='png')
     plt.close()
