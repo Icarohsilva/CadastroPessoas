@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <title>Login</title>
+</head>
+<body class="login-background">
+    <div class="login-container">
+        <form method="POST" class="login-form">
+            <h1>Identifique-se:</h1>
+            {{ form.csrf_token }}
+            {{ form.email.label }} {{ form.email(size=30, class="login-input", autofocus=true) }}
+            <div class="senha-input">
+                {{ form.senha.label }}
+                <input type="password" class="login-input" name="senha" id="senha">
+                <button type="button" id="mostrar_senha">Mostrar Senha</button>
+            </div>
+            <button type="submit" class="entrar-button">Entrar</button>
+            <a href="{{ url_for('recuperar_senha') }}">Esqueceu a senha?</a>
+                <a href="{{ url_for('cadastro') }}" class="cadastrar-button">Cadastre-se</a>
+        </form>
+    </div>
+    <img src="{{ url_for('static', filename='sol-lua-saturno.png') }}" alt="Background" class="login-background-image">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        togglePasswordVisibility('senha', 'mostrar_senha');
+    </script>
+</body>
+</html>

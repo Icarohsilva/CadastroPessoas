@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Cadastro - Etapa 2</title>
+</head>
+<body>
+    <div class="cadastro-background">
+        <div class="cadastro-container">
+            <h1>Cadastro - Etapa 2</h1>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="cadastro-step">
+                    <label for="cep">CEP:</label>
+                    {{ form.cep(class="cadastro-input") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="logradouro">Logradouro:</label>
+                    {{ form.logradouro(class="cadastro-input", readonly="readonly") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="numero">Número:</label>
+                    {{ form.numero(class="cadastro-input") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="complemento">Complemento:</label>
+                    {{ form.complemento(class="cadastro-input") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="bairro">Bairro:</label>
+                    {{ form.bairro(class="cadastro-input", readonly="readonly") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="cidade">Cidade:</label>
+                    {{ form.cidade(class="cadastro-input", readonly="readonly") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="estado">Estado:</label>
+                    {{ form.estado(class="cadastro-input", readonly="readonly") }}
+                </div>
+                <button type="submit" class="cadastro-button">Próxima Etapa</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

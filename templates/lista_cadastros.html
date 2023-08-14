@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cadastros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Lista de Cadastros</h1>
+    <form method="post" action="{{ url_for('lista_cadastros') }}">
+        <label for="filtro_nome">Filtrar por Nome:</label>
+        <input type="text" name="filtro_nome" id="filtro_nome" value="{{ request.form.filtro_nome }}">
+        
+        <label for="filtro_cpf">Filtrar por CPF:</label>
+        <input type="text" name="filtro_cpf" id="filtro_cpf" value="{{ request.form.filtro_cpf }}">
+
+        <label for="filtro_cidade">Filtrar por Cidade:</label>
+        <input type="text" name="filtro_cidade" id="filtro_cidade" value="{{ request.form.filtro_cidade }}">
+        
+        <label for="filtro_estado">Filtrar por UF:</label>
+        <select name="filtro_estado" id="filtro_estado">
+            <option value="">Todos</option>
+            <option value="SP">SP</option>
+            <option value="RJ">RJ</option>
+            <option value="MG">MG</option>
+            <option value="RS">RS</option>
+            <option value="PR">PR</option>
+            <!-- Adicione mais opções de UF -->
+        </select>
+        
+        <button type="submit">Filtrar</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Gênero</th>
+                <th>Endereço</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>CPF</th>
+                <th>Documento</th>
+                <th>Data de Nascimento</th>
+                <!-- Adicione mais cabeçalhos de coluna conforme necessário -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for cadastro in cadastros %}
+            <tr>
+                <td>{{ cadastro.nome_completo }}</td>
+                <td>{{ cadastro.idade }}</td>
+                <td>{{ cadastro.genero }}</td>
+                <td>{{ cadastro.endereco.rua }}, {{ cadastro.endereco.numero }}, {{ cadastro.endereco.cidade }}, {{ cadastro.endereco.estado }}</td>
+                <td>{{ cadastro.email }}</td>
+                <td>{{ cadastro.telefone }}</td>
+                <td>{{ cadastro.cpf if cadastro.cpf else 'N/A' }}</td>
+                <td>{{ cadastro.documento if cadastro.documento else 'N/A' }}</td>
+                <td>{{ cadastro.data_nascimento.strftime('%d/%m/%Y') if cadastro.data_nascimento else 'N/A' }}</td>
+                <!-- Adicione mais células de dados conforme necessário -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

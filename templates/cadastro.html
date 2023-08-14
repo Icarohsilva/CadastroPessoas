@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Cadastro - Etapa 1</title>
+</head>
+<body>
+    <div class="cadastro-background">
+        <div class="cadastro-container">
+            <h1>Cadastro - Etapa 1</h1>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="cadastro-step">
+                    <label for="nome">Nome:</label> 
+                    {{ form.nome_completo(class="cadastro-input") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="cpf">CPF:</label>
+                    {{ form.cpf(class="cadastro-input") }}  <!-- Certifique-se de que este campo esteja correto -->
+                </div>
+                <div class="cadastro-step">
+                    <label for="email">Email:</label>
+                    {{ form.email(class="cadastro-input") }}
+                </div>
+                <div class="cadastro-step">
+                    <label for="telefone">Telefone:</label>
+                    {{ form.telefone(class="cadastro-input") }}
+                </div>
+                <div class="cadastro-step">
+                    <label>Data de Nascimento:</label>
+                    {{ form.data_nascimento(class="cadastro-input") }}
+                </div>
+                <button type="submit" class="cadastro-button">Próxima Etapa</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
