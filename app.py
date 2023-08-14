@@ -1,60 +1,34 @@
+import base64
+from io import BytesIO
+import matplotlib.pyplot as plt
+import webbrowser 
+import random
+import string
+import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, DateField
-from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError,DataRequired
+from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError, DataRequired
 from werkzeug.security import generate_password_hash
 from flask_mail import Message, Mail
-import random
-import string
-import os
-import webbrowser   
-from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-from sqlalchemy import func
-from io import BytesIO
-import base64
-import matplotlib.pyplot as plt
-from forms import CadastroForm, EnderecoForm, SenhaForm  # Importe os formulários corretamente
+from reportlab.lib.pagesizes import letter
+from sqlalchemy import func  # Import the 'func' function from SQLAlchemy
+from models import db, User, Endereco  # Import models from models.py
+from forms import CadastroForm, EnderecoForm, SenhaForm, RecuperarSenhaForm, NovaSenhaForm
 
-
-
-# Configurar o Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'seu_email@gmail.com'  # Substitua pelo seu email
-app.config['MAIL_PASSWORD'] = 'sua_senha'  # Substitua pela sua senha
+app.config['MAIL_USERNAME'] = 'seu_email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'sua_senha'
 
-# Criar instância do Flask-Mail
 mail = Mail(app)
-db = SQLAlchemy(app)
-
-# Definir as tabelas no banco de dados
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nome_completo = db.Column(db.String(100), nullable=False)
-    idade = db.Column(db.Integer)
-    genero = db.Column(db.String(10))
-    endereco = db.relationship('Endereco', backref='user', uselist=False)
-    email = db.Column(db.String(100), unique=True)
-    telefone = db.Column(db.String(20))
-    cpf = db.Column(db.String(14))
-    documento = db.Column(db.String(100))
-    data_nascimento = db.Column(db.Date)
-    senha = db.Column(db.String(100))
-    # Adicione mais campos conforme necessário
-
-class Endereco(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    rua = db.Column(db.String(100))
-    numero = db.Column(db.String(20))
-    cidade = db.Column(db.String(50))
-    estado = db.Column(db.String(20))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+db.init_app(app)
 
 # Definir os formulários
 class LoginForm(FlaskForm):
@@ -242,17 +216,12 @@ def nova_senha():
 
 if __name__ == '__main__':
     with app.app_context():
-        # Criação das tabelas no banco de dados
         db.create_all()
-
-        # Criação do usuário ADMIN
         admin_user = User.query.filter_by(email='admin@admin.com').first()
         if not admin_user:
             admin_user = User(nome_completo='Admin', email='admin@admin.com', senha=generate_password_hash('admin_password', method='sha256'))
             db.session.add(admin_user)
             db.session.commit()
 
-    # Abrir o navegador automaticamente ao iniciar o aplicativo
     webbrowser.open_new_tab('http://127.0.0.1:5000/')
-
     app.run(debug=True)

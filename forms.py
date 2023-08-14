@@ -22,3 +22,15 @@ class SenhaForm(FlaskForm):
     senha = PasswordField('Nova Senha', validators=[DataRequired(), EqualTo('confirma_senha', message='Senhas devem coincidir')])
     confirma_senha = PasswordField('Confirmar Senha', validators=[DataRequired()])
     submit = SubmitField('Cadastrar')
+
+
+
+class RecuperarSenhaForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(), Email()])
+    enviar = SubmitField('Enviar')
+
+
+class NovaSenhaForm(FlaskForm):
+    senha = PasswordField('Nova Senha', validators=[InputRequired(), EqualTo('confirma_senha', message='Senhas devem coincidir')])
+    confirma_senha = PasswordField('Confirmar Senha')
+    enviar = SubmitField('Alterar Senha')
