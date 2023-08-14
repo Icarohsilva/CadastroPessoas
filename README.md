@@ -36,8 +36,7 @@ Este é um projeto de um sistema de cadastro e gerenciamento de usuários desenv
 
 4. Execute o aplicativo com o seguinte comando:
 
-    python app.py
-
+python app.py
 
 5. Acesse o aplicativo no seu navegador em http://127.0.0.1:5000/.
 
